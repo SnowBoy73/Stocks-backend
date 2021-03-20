@@ -7,23 +7,24 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
+import {Inject} from '@nestjs/common';
+import {IStockExchangeService, IStockExchangeServiceProvider} from '../../core/primary-ports/stock-exchange.service.interface';
 
 @WebSocketGateway()
 export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  newStockValue = '';
-  allStocks: string[] = ['BuzzCo', 'FunCorp', 'Happy Ltd'];
+  constructor(@Inject(IStockExchangeServiceProvider) private stocksService: IStockExchangeService) {}
+
   @WebSocketServer() server;
   @SubscribeMessage('update')
-  handleStocksEvent(@MessageBody() updatedValue: string): string {
-    console.log(updatedValue);
-    this.newStockValue = updatedValue; // WAS A PUSH
-    this.server.emit('stockValue', updatedValue); // IMPORTANT NAME
-    return updatedValue + 'hell0';
+  handleStocksEvent(@MessageBody() updatedStockValue: string): void {
+    console.log(updatedStockValue);
+    this.stocksService.updateStockValue(updatedStockValue);
+    this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
   }
 
   handleConnection(client: Socket, ...args: any[]): any {
     console.log('Client Connect', client.id);
-    client.emit('allStocks');
+    client.emit('allStocks', this.stocksService.getAllStocks());//
   }
 
   handleDisconnect(client: any): any {
