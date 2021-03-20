@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StocksModule } from './api/stocks.module';
+import { StockExchangeModule } from './api/stock-exchange.module';
 
 @Module({
-  imports: [StocksModule],
+  imports: [StockExchangeModule],
   controllers: [],
   providers: [],
 })
