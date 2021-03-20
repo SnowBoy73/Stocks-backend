@@ -22,7 +22,7 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
         console.log(updatedStockValue);
         this.stockExchangeService.updateStockValue(updatedStockValue);
         //this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
-        this.server.emit('stockValue', Array.from(this.stockExchangeService.getAllStocks().values())); // IMPORTANT NAME
+        this.server.emit('stockValue', this.stockExchangeService.getAllStocks()); // IMPORTANT NAME
 
   }
 
@@ -31,7 +31,9 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
     client.emit('allStocks', this.stockExchangeService.getAllStocks());//
   }
 
-  handleDisconnect(client: any): any {
+  handleDisconnect(client: Socket, ...args: any): any {
     console.log('Client Disconnect', client.id);
+    client.emit('allStocks', this.stockExchangeService.getAllStocks());//
+
   }
 }
