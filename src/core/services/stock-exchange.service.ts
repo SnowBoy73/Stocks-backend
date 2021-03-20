@@ -10,7 +10,8 @@ export class StockExchangeService {
   }
 
   getAllStocks(): string[] {
-    return this.allStocks;
+    //return this.allStocks;
+    return Array.from(this.allStocks.values());
   }
 
 }
