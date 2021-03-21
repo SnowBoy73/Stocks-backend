@@ -1,7 +1,7 @@
 export interface Stock {
-    id: string;
-    name: string;
-    description: string;
-    currentPrice: number;
-    startPrice: number;
+  id: string;
+  name: string;
+  description: string;
+  currentPrice: number;
+  startPrice: number;
 }
