@@ -17,13 +17,13 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
   @WebSocketServer() server;
   @SubscribeMessage('update')
   handleStocksEvent(
-      @MessageBody() updatedStockValue: string
-      ): void {
-        console.log(updatedStockValue);
-        this.stockExchangeService.updateStockValue(updatedStockValue);
-        //this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
-        this.server.emit('stockValue', this.stockExchangeService.getAllStocks()); // IMPORTANT NAME
-
+    @MessageBody() stockId: string[], //, updatedStockValue: string
+  ): void {
+    console.log('Gateway = ', stockId);
+    // const stockToReturn =
+    this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);
+    //this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
+    this.server.emit('stockValue', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
   }
 
   handleConnection(client: Socket, ...args: any[]): any {

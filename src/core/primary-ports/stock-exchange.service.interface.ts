@@ -1,8 +1,9 @@
+import { Stock } from '../models/stock.model';
+
 export const IStockExchangeServiceProvider = 'IStockExchangeServiceProvider';
 export interface IStockExchangeService {
 
-    updateStockValue(updatedStockValue: string): void;
+  updateStockValue(stockId: string, updatedStockValue: string): void;
 
-    getAllStocks(): string[];
+  getAllStocks(): Stock[];
 }
-
