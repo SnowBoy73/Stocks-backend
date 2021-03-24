@@ -7,8 +7,11 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import {Inject} from '@nestjs/common';
-import {IStockExchangeService, IStockExchangeServiceProvider} from '../../core/primary-ports/stock-exchange.service.interface';
+import { Inject } from '@nestjs/common';
+import {
+  IStockExchangeService,
+  IStockExchangeServiceProvider,
+} from '../../core/primary-ports/stock-exchange.service.interface';
 
 @WebSocketGateway()
 export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -17,13 +20,13 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
   @WebSocketServer() server;
   @SubscribeMessage('update')
   handleStocksEvent(
-    @MessageBody() stockId: string[], //, updatedStockValue: string
+    @MessageBody() stockId: string[], //, updatedStockValue: string  //REPLACE with DTO
   ): void {
     console.log('Gateway = ', stockId);
     // const stockToReturn =
     this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);
     //this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
-    this.server.emit('stockValue', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
+    this.server.emit('allStocks', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
   }
 
   handleConnection(client: Socket, ...args: any[]): any {
