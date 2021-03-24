@@ -1,4 +1,4 @@
-import {
+import {  // NEW FROM HERE!!!
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -12,6 +12,7 @@ import {
   IStockExchangeService,
   IStockExchangeServiceProvider,
 } from '../../core/primary-ports/stock-exchange.service.interface';
+import { StockUpdateDTO} from '../dtos/stock-update.dto';
 
 @WebSocketGateway()
 export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -20,12 +21,17 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
   @WebSocketServer() server;
   @SubscribeMessage('update')
   handleStocksEvent(
-    @MessageBody() stockId: string[], //, updatedStockValue: string  //REPLACE with DTO
+    @MessageBody() stockUpdate: StockUpdateDTO, //, updatedStockValue: string  //REPLACE with DTO
   ): void {
-    console.log('Gateway = ', stockId);
+    console.log('Gateway = ', stockUpdate.id);
     // const stockToReturn =
-    this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);
-    //this.server.emit('stockValue', updatedStockValue); // IMPORTANT NAME
+
+    this.stockExchangeService.updateStockValue(
+      stockUpdate.id,
+      stockUpdate.updatedStockValue,
+    );
+
+    //this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);  //WORKS OLD
     this.server.emit('allStocks', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
   }
 

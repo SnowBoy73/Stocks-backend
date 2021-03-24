@@ -55,11 +55,8 @@ export class StockExchangeService implements IStockExchangeService {
     console.log('Back1 = ', stockId, updatedStockValue);
 
 
-    /*const stock = this.allStocks.find((s) => s.id === stockId);
-        console.log('Back2 = ', stock.id, stock.name, stock.currentPrice);
-        if (stock) {
-         // stock.currentPrice = parseInt(updatedStockValue);u
-        }*/
+// START WORK HERE AFTER DOCKER
+
 
     const stock = this.allStocks.find((s) => s.id === stockId);
     //this stock.currentPrice = DTO.updatedPrice
