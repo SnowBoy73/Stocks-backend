@@ -1,4 +1,5 @@
-import {  // NEW FROM HERE!!!
+import {
+  // NEW FROM HERE!!!
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -12,21 +13,25 @@ import {
   IStockExchangeService,
   IStockExchangeServiceProvider,
 } from '../../core/primary-ports/stock-exchange.service.interface';
-import { StockUpdateDTO} from '../dtos/stock-update.dto';
+import { StockUpdateDTO } from '../dtos/stock-update.dto';
 
 @WebSocketGateway()
-export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(@Inject(IStockExchangeServiceProvider) private stockExchangeService: IStockExchangeService) {}
+export class StockExchangeGateway
+  implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(
+    @Inject(IStockExchangeServiceProvider)
+    private stockExchangeService: IStockExchangeService,
+  ) {}
 
   @WebSocketServer() server;
   @SubscribeMessage('update')
-  handleStocksEvent(
+  async handleStockUpdateEvent(
     @MessageBody() stockUpdate: StockUpdateDTO, //, updatedStockValue: string  //REPLACE with DTO
-  ): void {
+  ): Promise<void> {
     console.log('Gateway = ', stockUpdate.id, stockUpdate.updatedStockValue);
     // const stockToReturn =
 
-    this.stockExchangeService.updateStockValue(
+    await this.stockExchangeService.updateStockValue(
       stockUpdate.id,
       stockUpdate.updatedStockValue,
     );
@@ -34,14 +39,13 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
     this.server.emit('allStocks', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
   }
 
-  handleConnection(client: Socket, ...args: any[]): any {
+  async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     console.log('Client Connect', client.id);
-    client.emit('allStocks', this.stockExchangeService.getAllStocks());//
+    client.emit('allStocks', await this.stockExchangeService.getAllStocks()); //
   }
 
-  handleDisconnect(client: Socket, ...args: any): any {
+  async handleDisconnect(client: Socket, ...args: any): Promise<any> {
     console.log('Client Disconnect', client.id);
-    client.emit('allStocks', this.stockExchangeService.getAllStocks());//
-
+    client.emit('allStocks', await this.stockExchangeService.getAllStocks()); //
   }
 }

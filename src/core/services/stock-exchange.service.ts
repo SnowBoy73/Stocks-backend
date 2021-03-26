@@ -160,7 +160,7 @@ export class StockExchangeService implements IStockExchangeService {
       return this.stockRepository.findByIds();
     }
   */
-  }
+   }
 
   async getAllStocks(): Promise<Stock[]> {
     //return this.allStocks;
