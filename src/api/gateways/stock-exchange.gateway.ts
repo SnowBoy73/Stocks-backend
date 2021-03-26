@@ -36,7 +36,7 @@ export class StockExchangeGateway
       stockUpdate.updatedStockValue,
     );
     //this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);  //WORKS OLD
-    this.server.emit('allStocks', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
+    this.server.emit('update', this.stockExchangeService.getAllStocks()); // Return stockToReturn??  // NEW was allStocks
   }
 
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {

@@ -122,45 +122,7 @@ export class StockExchangeService implements IStockExchangeService {
       stockDB.currentPrice = parseInt(updatedStockValue);
       await this.stockRepository.update(stockId, stockDB);
     }
-
-    /* await getConnection()
-      .createQueryBuilder()
-      .update(StockEntity)
-      .set({ currentPrice: parseInt(updatedStockValue) })
-      .where('id = :stockId', { id: 1 })
-      .execute();
-*/
-
-    /*const stockDB = await this.stockRepository.findOne({ id: stockId }); //((s) => s.id === id);
-    if(stockDB) {
-      let client = this.stockRepository.create();
-      client.id = id;
-      client.nickname = nickname;
-      client = await this.clientRepository.save(client);
-
-      return {id: '' + client.id, nickname: client.nickname};
-      }
-*/
-
-    /*
-    const updatedStock = await this.stockRepository.findOne(stockId);
-    if (updatedStock)
-    {
-      await this.stockRepository.update(stockId, post);
-      return updatedStock
-    }
-    throw new HttpException('Stock not found', HttpStatus.NOT_FOUND);
   }
-*/
-
-    /*
-    async getStock(stockId: string): Promise<Stock> {
-      const stock = await this.stockRepository.findOne({ id: stockId }); //((s) => s.id === id);
-      i
-      return this.stockRepository.findByIds();
-    }
-  */
-   }
 
   async getAllStocks(): Promise<Stock[]> {
     //return this.allStocks;
