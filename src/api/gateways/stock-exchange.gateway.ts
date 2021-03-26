@@ -30,7 +30,6 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
       stockUpdate.id,
       stockUpdate.updatedStockValue,
     );
-
     //this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);  //WORKS OLD
     this.server.emit('allStocks', this.stockExchangeService.getAllStocks()); // Return stockToReturn??
   }
