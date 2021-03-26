@@ -4,4 +4,5 @@ export interface Stock {
   description: string;
   currentPrice: number;
   startPrice: number;
+  startDate: string;
 }

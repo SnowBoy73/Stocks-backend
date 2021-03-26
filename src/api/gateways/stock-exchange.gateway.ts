@@ -23,7 +23,7 @@ export class StockExchangeGateway implements OnGatewayConnection, OnGatewayDisco
   handleStocksEvent(
     @MessageBody() stockUpdate: StockUpdateDTO, //, updatedStockValue: string  //REPLACE with DTO
   ): void {
-    console.log('Gateway = ', stockUpdate.id);
+    console.log('Gateway = ', stockUpdate.id, stockUpdate.updatedStockValue);
     // const stockToReturn =
 
     this.stockExchangeService.updateStockValue(
