@@ -26,26 +26,33 @@ export class StockExchangeGateway
   @WebSocketServer() server;
   @SubscribeMessage('update')
   async handleStockUpdateEvent(
-    @MessageBody() stockUpdate: StockUpdateDTO, //, updatedStockValue: string  //REPLACE with DTO
-  ): Promise<void> {
+    @MessageBody() stockUpdate: StockUpdateDTO,
+  ): Promise<any> {
     console.log('Gateway = ', stockUpdate.id, stockUpdate.updatedStockValue);
-    // const stockToReturn =
-
-    await this.stockExchangeService.updateStockValue(
+    const ustock = await this.stockExchangeService.updateStockValue(
       stockUpdate.id,
       stockUpdate.updatedStockValue,
     );
-    //this.stockExchangeService.updateStockValue(stockId[0], stockId[1]);  //WORKS OLD
-    this.server.emit('update', this.stockExchangeService.getAllStocks()); // Return stockToReturn??  // NEW was allStocks
+    this.server.emit('update', ustock); // Return stockToReturn??  // NEW was allStocks
+    this.server.emit(
+      'newStockValues',
+      this.stockExchangeService.getAllStocks(),
+    ); //NEW
   }
 
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     console.log('Client Connect', client.id);
-    client.emit('allStocks', await this.stockExchangeService.getAllStocks()); //
+    client.emit(
+      'newStockValues',
+      await this.stockExchangeService.getAllStocks(),
+    ); //
   }
 
   async handleDisconnect(client: Socket, ...args: any): Promise<any> {
     console.log('Client Disconnect', client.id);
-    client.emit('allStocks', await this.stockExchangeService.getAllStocks()); //
+    client.emit(
+      'newStockValues',
+      await this.stockExchangeService.getAllStocks(),
+    ); //
   }
 }
