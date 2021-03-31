@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Stock } from '../models/stock.model';
 import { IStockExchangeService } from '../primary-ports/stock-exchange.service.interface';
-import compileStreaming = WebAssembly.compileStreaming;
 import StockEntity from '../../infrastructure/data-source/entities/stock.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,7 +14,7 @@ export class StockExchangeService implements IStockExchangeService {
     private stockRepository: Repository<StockEntity>,
   ) {}
 
-  addStock(): void {
+  addStock(): void { // Written to test connection. Unimplemented.
     const testStock: Stock = { // ultimately from client tier
       id: '1',
       name: 'Gnome Power',
@@ -36,34 +35,29 @@ export class StockExchangeService implements IStockExchangeService {
       .finally(() => {
         console.log('Finally called');
       });
-    console.log('ADDSTOCK');
   }
 
   async updateStockValue(
     stockId: string,
     updatedStockValue: string,
-  ): Promise<Stock> { //WAS VOID 29-3
+  ): Promise<Stock> {
     const stockDB = await this.stockRepository.findOne({ id: stockId });
     if (stockDB) {
       stockDB.currentPrice = parseInt(updatedStockValue);
       await this.stockRepository.update(stockId, stockDB);
       console.log('updateStockValue returns = ', stockDB);
-
       const updatedstock: Stock = JSON.parse(JSON.stringify(stockDB));
-
       return updatedstock;
     }
   }
 
   async getAllStocks(): Promise<Stock[]> {
     const stocks = await this.stockRepository.find();
-    console.log('Stocks = ', stocks);
     const allStocks: Stock[] = JSON.parse(JSON.stringify(stocks));
-    console.log('getAllStocks total: ', allStocks.length);
     return allStocks;
   }
 
-  /*
+  /* // older version of getAllStocks with then - catch  finally
     const stocksDB = await this.stockRepository
       .find()
       .then((stock) => {

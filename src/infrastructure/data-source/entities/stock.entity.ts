@@ -8,16 +8,16 @@ export class StockEntity {
   @Column({ unique: true })
   public name: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   public description: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   public currentPrice: number;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   public startPrice: number;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   public startDate: string;
 }
 

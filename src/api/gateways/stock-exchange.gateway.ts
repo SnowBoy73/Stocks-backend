@@ -1,5 +1,4 @@
 import {
-  // NEW FROM HERE!!!
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -33,26 +32,17 @@ export class StockExchangeGateway
       stockUpdate.id,
       stockUpdate.updatedStockValue,
     );
-    this.server.emit('update', ustock); // Return stockToReturn??  // NEW was allStocks
-    this.server.emit(
-      'newStockValues',
-      this.stockExchangeService.getAllStocks(),
-    ); //NEW
+    this.server.emit('update', ustock);
+    this.server.emit('getAllStocks', this.stockExchangeService.getAllStocks());
   }
 
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     console.log('Client Connect', client.id);
-    client.emit(
-      'newStockValues',
-      await this.stockExchangeService.getAllStocks(),
-    ); //
+    client.emit('getAllStocks', await this.stockExchangeService.getAllStocks());
   }
 
   async handleDisconnect(client: Socket, ...args: any): Promise<any> {
     console.log('Client Disconnect', client.id);
-    client.emit(
-      'newStockValues',
-      await this.stockExchangeService.getAllStocks(),
-    ); //
+    client.emit('getAllStocks', await this.stockExchangeService.getAllStocks());
   }
 }

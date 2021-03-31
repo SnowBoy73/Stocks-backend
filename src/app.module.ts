@@ -3,7 +3,7 @@ import { StockExchangeModule } from './api/stock-exchange.module';
 import { StockExchangeService } from './core/services/stock-exchange.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
-import {DatabaseModule} from './infrastructure/data-source/postgres/database.module';
+import { DatabaseModule } from './infrastructure/data-source/postgres/database.module';
 
 @Module({
   imports: [
